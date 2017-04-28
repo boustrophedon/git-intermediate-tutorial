@@ -1,0 +1,9 @@
+# Read the DISCUSSION section. really.
+man git-commit
+
+# In particular, write commits in the imperative mood, that is:
+# "Fix bug in the plumbus factory code
+#
+# - Memory leak in the fleem recollection process cause explosions"
+# 
+# Leave the second line blank and write a summary of what the commit does

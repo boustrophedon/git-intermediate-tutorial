@@ -1,0 +1,11 @@
+# Branches tracking master
+git checkout --track -b mybranch
+
+# List branches
+git branch
+git branch -vv
+
+# Delete fully merged branches
+git checkout master
+git branch -d mybranch
+# Use -D to delete unmerged branches. This will delete your code and it will only be recoverable via the reflog
