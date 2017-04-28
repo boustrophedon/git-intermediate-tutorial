@@ -1,0 +1,36 @@
+# Read the rebase manpage
+man git-rebase
+
+# Rebase off of commits in current branch
+# Do this in order to swap order, combine tmp commits, amend things, split files
+git commit -am "tmp"
+git commit -am "tmp"
+git commit -am "tmp"
+git rebase -i HEAD^4 # and change 'pick' to 'squash' for the tmp commits
+# You probably don't want to squash the first tmp so you have a new commit, and then write a commit message for all the tmps
+
+# Then you notice you have accidentally added some code in one of the tmp commits that was supposed to be in another branch
+git rebase -i HEAD^^ # Instead of writing ^n you can put n ^
+# Then change 'pick' to edit
+# Now we have to dive into the deep dark world of git reset --hard vs --soft.
+# Basically, when rebasing, always use --soft. --hard is only when you just added something and you don't want it at all anymore.
+git reset --soft HEAD^
+# Now your index, which is the set of files that have been `git add`ed but not committed, contains all of the changes that were in the commit that you just reset
+# Then remove the file that you wanted from the index so you can re-add only the parts that you want
+git reset HEAD myfile.txt
+# If you don't want the entire file in this commit skip the next part and just make your commit and do git rebase --continue
+
+# There are several ways to add only certain parts of a file
+# The simplest is just to make a copy and delete the parts you don't want, but git has specialized tools for this
+# The most straightforward way is
+git add -p
+# which presents you with chunks of text and you can choose to include it in your add
+# afterwards, the file will be in the same state as it started but the part that was actually added to the repo will contain only the chunks you selected
+
+# If the entire file is new, `git add -p` will give you the entire file (I think) so this does not work
+# Instead, we can use `git add -e`, which gives us edit mode
+git add -e
+
+# This allows us to select individual lines to add
+
+# Then you can commit the first thing, and then make a separate commit for the rest of the file
