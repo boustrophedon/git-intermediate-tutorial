@@ -1,0 +1,99 @@
+three points:
+
+hygiene, that is, making the repository something readable and usable by yourself and others
+how to effectively use branches
+how to effectively use rebase
+and a few other tips and tricks
+
+but actually we're going to do other tips and tricks first:
+changing the origin/etc
+	git remote add origin git@github.com:etc
+	origin is the name of "the remote" i.e. the remote repository
+
+git is a distributed version control system - you technically do not need remotes
+	you can use git-format-patch, git-send-email, or git-diff (for a single commit)
+look at the examples in the man page, but most common for me is
+
+git checkout my_branch
+git format-patch --stdout > my_branch.patch
+email to someone, tell them to check out a new branch and apply the patches
+git checkout -b harrys_patches
+git am my_branch.patch
+
+and now their patches are applied. git send-email is basically this plus email stuff, but it's honestly easier to do it this way. notes: make sure you're in a new branch when you do the `git am`. The reason I prefer --stdout is because otherwise format-patch will make a separate file for each commit, which is useful for email but not if you're just sending someone a patch.
+
+Hygiene
+
+1. write good commit messages
+	- read the DISCUSSION section of the git-commit man page
+	- "Though not required, it's a good idea to begin the commit message with a single short (less than 50 character) line summarizing the change, followed by a blank
+       line and then a more thorough description. The text up to the first blank line in a commit message is treated as the commit title, and that title is used
+       throughout Git."
+	- I read somewhere, and the Linux kernel uses this convention, that commit titles should be in the imperative mood. That is, it should read "Do this." "Fix the test case." "Construct additional pylons." If you need help with this, one way to think about it is to write the sentence as "When applied, this commit will..." and then the title.
+	- I like to make the "thorough description" a list of bullet points describing what the commit does.
+
+	- This is the next point: each commit should be a single logical change. it should not be "fix css and add a <div> in some unrelated html and also fix a sort bug in my shitty javascript code". Those should be three unrelated commits.
+
+You might ask, what if they're separate but related things?
+
+Say you're changing some sort of HTML form for your cat social network and you want to add the ability for your cat to have a middle name.
+
+You need to:
+	- Change the HTML (and maybe CSS)
+	- Change the Javascript to, I don't know, do whatever shit your shitty javascript is doing
+	- Change your backend to receive and store the middle name in your database
+
+It's arguable that the first two parts could be in the same commit (though I disagree), but regardless all three things are part of the same "feature".
+
+This leads us to the topic of:
+
+
+How to effectively use branches
+
+When should you start a new branch
+	essentially, when you are starting a new feature or single topic. which means basically always.
+
+How to make a new branch
+	git checkout -b branchname -t master
+	this creates and checks out that branch, and sets its upstream to the master branch
+	setting the upstream means that rebase and pull work without having to specify the upstream manually
+	this can be changed to any other branch
+	you can make this the default by setting a config: `git config --global branch.autosetupmerge always`
+
+
+i.e.
+	git checkout -b fix_your_shitty_bug --track
+	how to inspect branches
+		git branch
+	with extra -v or -vv if you want to see remote information
+	how to delete branches
+		git branch -d for fully merged branches
+		git branch -D if you just want to destroy a branch
+
+		'merged' is dependent on the current branch or if you have set an upstream on that branch
+
+	some people put the branch in their PS1 so that they don't make mistakes
+
+Merging, and why you shouldn't do it
+	if you have merge conflicts, it means you have multiple people working on the same thing but different features, which usually means your code needs to be refactored.
+	sometimes, especially in large projects like the linux kernel, this will happen naturally, but typically on smaller teams you should know when you're going to encounter a merge conflict and work to avoid it in the first place, by e.g. using rebasing or cherry-picking described later.
+
+and by later i mean now
+
+How to effectively use rebasing
+
+- what does rebasing do?
+	open the git-rebase manpage
+
+- why do we want to rebase?
+	hygiene. it makes your repo look nice.
+	it means that if you have one branch, and someone else has another branch that doesn't intersect your branch
+	if their branch gets merged first, you can rebase on theirs and continue developing without merge conflicts
+
+- how to change order of commits
+	git rebase -i HEAD^3
+	pick/change order in the presented thing
+- how to split a commit that you've passed
+	how to split the past commit
+		eg you accidentally commited some files you didn't intend to or whatever
+
