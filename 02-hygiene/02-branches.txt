@@ -9,3 +9,6 @@ git branch -vv
 git checkout master
 git branch -d mybranch
 # Use -D to delete unmerged branches. This will delete your code and it will only be recoverable via the reflog
+
+# Set git config to always track the current branch as the upstream
+git config --global branch.autosetupmerge always
