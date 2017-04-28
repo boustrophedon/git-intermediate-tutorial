@@ -96,4 +96,4 @@ How to effectively use rebasing
 - how to split a commit that you've passed
 	how to split the past commit
 		eg you accidentally commited some files you didn't intend to or whatever
-
+-  merging and the merge tool

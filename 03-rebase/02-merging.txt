@@ -1,0 +1,30 @@
+# Usually you don't want to have to merge, but sometimes when rebasing you have to merge
+# Pull the latest changes from master
+git checkout master
+git pull
+# Check out your own branch and then rebase on top of the newest changes in master
+git rebase master # If your upstream is set you don't need to include the branch to rebase on top of
+
+# There are various tools that git can be configured to use, a lot of the time the default is set to vimdiff
+# You can change the tool with 
+git config merge.tool vimdiff
+
+# Merge tool looks pretty scary but it's not that bad. It's kind of bad though.
+# Create a file in master and reset that commit in a branch, then try rebasing, which creates a merge conflict
+git checkout master
+echo "hello" >> hello.txt
+git add hello.txt
+git commit -m "Add hello file"
+git checkout -b new_merge_conflict
+git reset --hard HEAD^
+echo "goodbye" >> hello.txt
+git rebase
+
+# here you will get a merge conflict
+# so run
+git mergetool
+
+# There should now be four windows. The bottom one is the actual file that will be written
+# In the top row, the left window should be the original (in master), the middle is something I forget, and the right is the file in the branch# There are some commands you can use to choose parts
+# There are also guis for merging
+
