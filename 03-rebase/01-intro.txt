@@ -6,7 +6,7 @@ man git-rebase
 git commit -am "tmp"
 git commit -am "tmp"
 git commit -am "tmp"
-git rebase -i HEAD^4 # and change 'pick' to 'squash' for the tmp commits
+git rebase -i HEAD~4 # and change 'pick' to 'squash' for the tmp commits
 # You probably don't want to squash the first tmp so you have a new commit, and then write a commit message for all the tmps
 
 # Then you notice you have accidentally added some code in one of the tmp commits that was supposed to be in another branch
