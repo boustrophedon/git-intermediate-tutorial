@@ -1,0 +1,19 @@
+# Changing remote
+
+# Look at the current address
+git remote -v
+# Changing the address of the remote repository 'origin'
+git remote set-url origin http://github.com/boustrophedon/git-intermediate-tutorial
+# You can have multiple remote repositories
+git remote add other_origin http://example.com/example/git-intermediate-tutorial
+
+
+# Transferring code via email, usb drive, etc.
+
+# Check out a branch and format for sending to someone
+git checkout my_branch
+git format-patch --stdout > my_branch.patch
+
+# Email and send to someone, then they can apply it like so:
+git checkout -b harrys_patches
+git am my_branch.patch
