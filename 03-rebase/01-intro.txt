@@ -20,6 +20,8 @@ git reset --soft HEAD^
 git reset HEAD myfile.txt
 # If you don't want the entire file in this commit skip the next part and just make your commit and do git rebase --continue
 
+# These following add modes are only really useful when changing an already existing file, not adding an entirely new one
+
 # There are several ways to add only certain parts of a file
 # The simplest is just to make a copy and delete the parts you don't want, but git has specialized tools for this
 # The most straightforward way is
@@ -27,8 +29,7 @@ git add -p
 # which presents you with chunks of text and you can choose to include it in your add
 # afterwards, the file will be in the same state as it started but the part that was actually added to the repo will contain only the chunks you selected
 
-# If the entire file is new, `git add -p` will give you the entire file (I think) so this does not work
-# Instead, we can use `git add -e`, which gives us edit mode
+# We can also use `git add -e`, which gives us edit mode
 git add -e
 
 # This allows us to select individual lines to add
