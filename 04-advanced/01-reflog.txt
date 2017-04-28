@@ -1,0 +1,20 @@
+# Sometimes you really screw up when rebasing or something else and get rid of a commit entirely
+# reflog to the rescue
+
+# The reflog basically keeps a log of all the commits you make and the changes that happen
+# You can use it to find a commit that you got rid of, and use git cherry-pick to get it back
+
+git checkout -b new_branch
+echo "gone forever" >> bye.txt
+git add bye.txt
+git commit -m "This commit will be lost"
+git reset --hard HEAD^
+
+# now we have reset --hard to the previous commit, so we have no access to the commit with the bye file
+# This may also happen if you accidentally delete a line when interactively rebasing
+
+# To recover, use `git reflog`, find the commit with the commit message you want, and keep track of the hash
+git reflog
+
+# Then use `git cherry-pick` to add it back to your branch
+git cherry-pick COMMIT-HASH
